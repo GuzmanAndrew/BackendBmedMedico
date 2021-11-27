@@ -4,8 +4,8 @@ import com.medkaapp.dto.Mensaje;
 import com.medkaapp.security.dto.JwtDto;
 import com.medkaapp.security.dto.LoginUsuario;
 import com.medkaapp.security.dto.NuevoUsuario;
+import com.medkaapp.security.entity.Medico;
 import com.medkaapp.security.entity.Rol;
-import com.medkaapp.security.entity.Usuario;
 import com.medkaapp.security.enums.RolNombre;
 import com.medkaapp.security.jwt.JwtProvider;
 import com.medkaapp.security.service.RolService;
@@ -52,7 +52,7 @@ public class AuthController {
      * @return
      */
     @GetMapping("/findUsuario/{usuario}")
-    public Usuario PacienteId(@PathVariable(name = "usuario") String usuario) {
+    public Medico PacienteId(@PathVariable(name = "usuario") String usuario) {
         return usuarioService.getByNombreUsuario(usuario).get();
     }
 
@@ -61,7 +61,7 @@ public class AuthController {
      * @return
      */
     @GetMapping("/findUsuarios")
-    public List<Usuario> UsuarioList() {
+    public List<Medico> UsuarioList() {
         return usuarioService.getListUsuarios();
     }
 
@@ -70,8 +70,8 @@ public class AuthController {
      * @return
      */
     @GetMapping("/usuario/{id}")
-    public Usuario usuarioId(@PathVariable(name = "id") Integer id) {
-        Usuario usuarioId = new Usuario();
+    public Medico usuarioId(@PathVariable(name = "id") Integer id) {
+        Medico usuarioId = new Medico();
         usuarioId = usuarioService.getByUserId(id);
         System.out.println("Paciente seleccionado fue: " + usuarioId);
         return usuarioId;
@@ -85,16 +85,14 @@ public class AuthController {
             return new ResponseEntity(new Mensaje("ese nombre ya existe"), HttpStatus.BAD_REQUEST);
         if(usuarioService.existsByEmail(nuevoUsuario.getEmail()))
             return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
-        Usuario usuario =
-                new Usuario(nuevoUsuario.getNombres(), nuevoUsuario.getApellidos(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
-                        nuevoUsuario.getEdad(), nuevoUsuario.getCedula(), nuevoUsuario.getDireccion(), nuevoUsuario.getCelular(),
+        Medico usuario =
+                new Medico(nuevoUsuario.getNombres(), nuevoUsuario.getApellidos(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
                         passwordEncoder.encode(nuevoUsuario.getPassword()));
 
         Set<Rol> roles = new HashSet<>();
+        roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
         if(nuevoUsuario.getRoles().contains("medico")) {
             roles.add(rolService.getByRolNombre(RolNombre.ROLE_MEDICO).get());
-        } else {
-            roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
         }
         usuario.setRoles(roles);
         usuarioService.save(usuario);

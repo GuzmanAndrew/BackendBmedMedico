@@ -14,10 +14,6 @@ public class NuevoUsuario {
     private String nombreUsuario;
     @Email
     private String email;
-    private int edad;
-    private int cedula;
-    private String direccion;
-    private int celular;
     @NotBlank
     private String password;
     private Set<String> roles = new HashSet<>();
@@ -52,38 +48,6 @@ public class NuevoUsuario {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
-    public int getCedula() {
-        return cedula;
-    }
-
-    public void setCedula(int cedula) {
-        this.cedula = cedula;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public int getCelular() {
-        return celular;
-    }
-
-    public void setCelular(int celular) {
-        this.celular = celular;
     }
 
     public String getPassword() {

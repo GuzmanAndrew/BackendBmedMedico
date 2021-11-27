@@ -1,6 +1,6 @@
 package com.medkaapp.security.service;
 
-import com.medkaapp.security.entity.Usuario;
+import com.medkaapp.security.entity.Medico;
 import com.medkaapp.security.repository.IUsuarioDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,15 +15,15 @@ public class UsuarioService {
     @Autowired
     IUsuarioDao usuarioRepository;
 
-    public Optional<Usuario> getByNombreUsuario(String nombreUsuario){
+    public Optional<Medico> getByNombreUsuario(String nombreUsuario){
         return usuarioRepository.findByNombreUsuario(nombreUsuario);
     }
 
-    public List<Usuario> getListUsuarios(){
+    public List<Medico> getListUsuarios(){
         return usuarioRepository.findAll();
     }
 
-    public Usuario getByUserId(Integer id){
+    public Medico getByUserId(Integer id){
         return  usuarioRepository.findById(id).get();
     }
 
@@ -35,11 +35,11 @@ public class UsuarioService {
         return usuarioRepository.existsByEmail(email);
     }
 
-    public void save(Usuario usuario){
+    public void save(Medico usuario){
         usuarioRepository.save(usuario);
     }
 
-    public Usuario findById(Integer id) {
+    public Medico findById(Integer id) {
         return usuarioRepository.findById(id).get();
     }
 }

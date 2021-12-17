@@ -47,34 +47,13 @@ public class AuthController {
     JwtProvider jwtProvider;
 
     /**
-     * Endponit para buscar usuario por nombre
+     * Endponit para buscar medico por nombre
      * @param usuario body
      * @return
      */
     @GetMapping("/findUsuario/{usuario}")
     public Medico PacienteId(@PathVariable(name = "usuario") String usuario) {
         return usuarioService.getByNombreUsuario(usuario).get();
-    }
-
-    /**
-     * Endponit para listar usuarios
-     * @return
-     */
-    @GetMapping("/findUsuarios")
-    public List<Medico> UsuarioList() {
-        return usuarioService.getListUsuarios();
-    }
-
-    /**
-     * Endponit para listar usuario por id
-     * @return
-     */
-    @GetMapping("/usuario/{id}")
-    public Medico usuarioId(@PathVariable(name = "id") Integer id) {
-        Medico usuarioId = new Medico();
-        usuarioId = usuarioService.getByUserId(id);
-        System.out.println("Paciente seleccionado fue: " + usuarioId);
-        return usuarioId;
     }
 
     @PostMapping("/nuevo")
@@ -90,7 +69,6 @@ public class AuthController {
                         passwordEncoder.encode(nuevoUsuario.getPassword()));
 
         Set<Rol> roles = new HashSet<>();
-        roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
         if(nuevoUsuario.getRoles().contains("medico")) {
             roles.add(rolService.getByRolNombre(RolNombre.ROLE_MEDICO).get());
         }

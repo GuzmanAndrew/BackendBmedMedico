@@ -12,7 +12,7 @@ pipeline {
     }
     stage("Checkout from SCM"){
       steps {
-        git branch: 'master', credentialsId: 'github', url: 'https://github.com/GuzmanAndrew/BackendBmedUsuario'
+        git branch: 'master', credentialsId: 'github', url: 'https://github.com/GuzmanAndrew/BackendBmedMedico'
       }
     }
     stage("Build Application"){

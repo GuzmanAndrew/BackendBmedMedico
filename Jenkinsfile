@@ -5,7 +5,7 @@ pipeline {
     maven 'Maven3'
   }
   environment {
-	  APP_NAME = "register-app-pipeline"
+	  APP_NAME = "bmed-medicos-pipeline"
     RELEASE = "1.0.0"
     DOCKER_USER = "andrewramirez"
     DOCKER_PASS = 'Software9525*'
@@ -52,6 +52,21 @@ pipeline {
             docker_image.push("${IMAGE_TAG}")
             docker_image.push('latest')
           }
+        }
+      }
+    }
+    stage("Trivy Scan") {
+      steps {
+        script {
+	        sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image andrewramirez/bmed-medicos-pipeline:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
+        }
+      }
+    }
+    stage ('Cleanup Artifacts') {
+      steps {
+        script {
+          sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
+          sh "docker rmi ${IMAGE_NAME}:latest"
         }
       }
     }

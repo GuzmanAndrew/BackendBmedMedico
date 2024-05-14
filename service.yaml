@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bmed-medico-service
+  labels:
+    app: bmed-medico
+spec:
+  selector:
+    app: bmed-medico
+
+  ports:
+    - port: 8082
+      targetPort: 8082
+
+  type: LoadBalancer

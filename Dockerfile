@@ -1,6 +1,6 @@
 FROM openjdk:17
 
-EXPOSE 8080
+EXPOSE 8082
 
 ADD ./target/Bmed_Medicos-1.0.0.jar app.jar
 

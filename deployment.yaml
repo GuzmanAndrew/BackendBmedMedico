@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bmed-medico-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bmed-medico
+  template:
+    metadata:
+      labels:
+        app: bmed-medico
+    spec:
+      containers:
+        - name: bmed-medico
+          image: andrewramirez/bmed-medicos-pipeline:1.0.0-8
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8082

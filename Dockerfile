@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM mcr.microsoft.com/openjdk/jdk:17-ubuntu as base
 
 EXPOSE 8082
 

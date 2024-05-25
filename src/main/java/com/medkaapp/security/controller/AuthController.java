@@ -48,12 +48,24 @@ public class AuthController {
 
     /**
      * Endponit para buscar medico por nombre
-     * @param usuario body
+     * @param medico body
      * @return
      */
-    @GetMapping("/findUsuario/{usuario}")
-    public Medico PacienteId(@PathVariable(name = "usuario") String usuario) {
-        return usuarioService.getByNombreUsuario(usuario).get();
+    @GetMapping("/findMedico/{medico}")
+    public Medico pacienteUserName(@PathVariable(name = "medico") String medico) {
+        return usuarioService.getByNombreUsuario(medico).get();
+    }
+
+    /**
+     * Endponit para listar medico por id
+     *
+     * @return
+     */
+    @GetMapping("/medico/{id}")
+    public Medico medicoId(@PathVariable(name = "id") Integer id) {
+        Medico medicoId = usuarioService.getByUserId(id);
+        System.out.println("Medico seleccionado fue: " + medicoId);
+        return medicoId;
     }
 
     @PostMapping("/nuevo")
@@ -69,13 +81,11 @@ public class AuthController {
                         passwordEncoder.encode(nuevoUsuario.getPassword()));
 
         Set<Rol> roles = new HashSet<>();
-        if(nuevoUsuario.getRoles().contains("medico")) {
-            roles.add(rolService.getByRolNombre(RolNombre.ROLE_MEDICO).get());
-        }
+        roles.add(rolService.getByRolNombre(RolNombre.ROLE_MEDICO).get());
         
         usuario.setRoles(roles);
         usuarioService.save(usuario);
-        return new ResponseEntity(new Mensaje("usuario guardado"), HttpStatus.CREATED);
+        return new ResponseEntity(new Mensaje("medico guardado"), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
@@ -86,8 +96,7 @@ public class AuthController {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUsuario.getNombreUsuario(), loginUsuario.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtProvider.generateToken(authentication);
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-        JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
+        JwtDto jwtDto = new JwtDto(jwt);
         return new ResponseEntity(jwtDto, HttpStatus.OK);
     }
 }
